@@ -37,53 +37,25 @@ namespace iconeditor
 
         private void Panel1_Paint(object sender, PaintEventArgs e)
         {
-            graphics.ScaleTransform(zoom, zoom);
-            if(!initialized)
-            {
-                graphics.FillRectangle(brush, 1, 1, 1, 1);
-                graphics.FillRectangle(brush, 1, 3, 1, 1);
-                graphics.FillRectangle(brush, 1, 5, 1, 1);
-                graphics.FillRectangle(brush, 1, 7, 1, 1);
-                graphics.FillRectangle(brush, 1, 9, 1, 1);
-                graphics.FillRectangle(brush, 1, 11, 1, 1);
+            drawGrid();
+        }
 
-                graphics.FillRectangle(brush, 2, 2, 1, 1);
-                graphics.FillRectangle(brush, 2, 4, 1, 1);
-                graphics.FillRectangle(brush, 2, 6, 1, 1);
-                graphics.FillRectangle(brush, 2, 8, 1, 1);
-                graphics.FillRectangle(brush, 2, 10, 1, 1);
-                graphics.FillRectangle(brush, 2, 12, 1, 1);
+        private void drawGrid()
+        {
+            Pen dashedPen = new Pen(Color.Pink, 2);
+            dashedPen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
+            dashedPen.DashOffset = 10;
+            dashedPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
 
-                graphics.FillRectangle(brush, 3, 1, 1, 1);
-                graphics.FillRectangle(brush, 3, 3, 1, 1);
-                graphics.FillRectangle(brush, 3, 5, 1, 1);
-                graphics.FillRectangle(brush, 3, 7, 1, 1);
-                graphics.FillRectangle(brush, 3, 9, 1, 1);
-                graphics.FillRectangle(brush, 3, 11, 1, 1);
+            graphics.DrawLine(dashedPen, 1, 100, 500, 100);
+            graphics.DrawLine(dashedPen, 1, 200, 500, 200);
+            graphics.DrawLine(dashedPen, 1, 300, 500, 300);
+            graphics.DrawLine(dashedPen, 1, 400, 500, 400);
 
-                graphics.FillRectangle(brush, 4, 2, 1, 1);
-                graphics.FillRectangle(brush, 4, 4, 1, 1);
-                graphics.FillRectangle(brush, 4, 6, 1, 1);
-                graphics.FillRectangle(brush, 4, 8, 1, 1);
-                graphics.FillRectangle(brush, 4, 10, 1, 1);
-                graphics.FillRectangle(brush, 4, 12, 1, 1);
-
-                graphics.FillRectangle(brush, 5, 1, 1, 1);
-                graphics.FillRectangle(brush, 5, 3, 1, 1);
-                graphics.FillRectangle(brush, 5, 5, 1, 1);
-                graphics.FillRectangle(brush, 5, 7, 1, 1);
-                graphics.FillRectangle(brush, 5, 9, 1, 1);
-                graphics.FillRectangle(brush, 5, 11, 1, 1);
-
-                graphics.FillRectangle(brush, 6, 2, 1, 1);
-                graphics.FillRectangle(brush, 6, 4, 1, 1);
-                graphics.FillRectangle(brush, 6, 6, 1, 1);
-                graphics.FillRectangle(brush, 6, 8, 1, 1);
-                graphics.FillRectangle(brush, 6, 10, 1, 1);
-                graphics.FillRectangle(brush, 6, 12, 1, 1);
-
-                initialized = true;
-            }
+            graphics.DrawLine(dashedPen, 100, 1, 100, 500);
+            graphics.DrawLine(dashedPen, 200, 1, 200, 500);
+            graphics.DrawLine(dashedPen, 300, 1, 300, 500);
+            graphics.DrawLine(dashedPen, 400, 1, 400, 500);
         }
 
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
@@ -91,13 +63,25 @@ namespace iconeditor
             moving = true;
             x = e.X;
             y = e.Y;
+
+            int rectangle_X = e.X / 100;
+            rectangle_X = rectangle_X * 100;
+
+            int rectangle_Y = e.Y / 100;
+            rectangle_Y = rectangle_Y * 100;
+            graphics.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             if(moving && x != -1 && y != -1)
             {
-                graphics.DrawLine(pen, new Point(x, y), e.Location);
+                int rectangle_X = e.X / 100;
+                rectangle_X = rectangle_X * 100;
+
+                int rectangle_Y = e.Y / 100;
+                rectangle_Y = rectangle_Y * 100;
+                graphics.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
 
                 x = e.X;
                 y = e.Y;
@@ -109,6 +93,7 @@ namespace iconeditor
             moving = false;
             x = -1;
             y = -1;
+            drawGrid();
         }
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
@@ -131,5 +116,15 @@ namespace iconeditor
 
         }
 
+        private void Eraser_Click(object sender, EventArgs e)
+        {
+            brush = (Brush)Brushes.White;
+        }
+
+        private void Black_Click(object sender, EventArgs e)
+        {
+            brush = (Brush)Brushes.Black;
+
+        }
     }
 }

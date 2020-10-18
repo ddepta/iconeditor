@@ -32,6 +32,8 @@
             this.btnPlus = new System.Windows.Forms.Button();
             this.btnMinus = new System.Windows.Forms.Button();
             this.trackBar1 = new System.Windows.Forms.TrackBar();
+            this.eraser = new System.Windows.Forms.Button();
+            this.black = new System.Windows.Forms.Button();
             this.canvas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.SuspendLayout();
@@ -39,6 +41,8 @@
             // canvas
             // 
             this.canvas.BackColor = System.Drawing.Color.White;
+            this.canvas.Controls.Add(this.black);
+            this.canvas.Controls.Add(this.eraser);
             this.canvas.Controls.Add(this.btnPlus);
             this.canvas.Controls.Add(this.btnMinus);
             this.canvas.Controls.Add(this.trackBar1);
@@ -85,6 +89,26 @@
             this.trackBar1.Value = 100;
             this.trackBar1.Scroll += new System.EventHandler(this.TrackBar1_Scroll);
             // 
+            // eraser
+            // 
+            this.eraser.Location = new System.Drawing.Point(100, 478);
+            this.eraser.Name = "eraser";
+            this.eraser.Size = new System.Drawing.Size(56, 23);
+            this.eraser.TabIndex = 3;
+            this.eraser.Text = "Eraser";
+            this.eraser.UseVisualStyleBackColor = true;
+            this.eraser.Click += new System.EventHandler(this.Eraser_Click);
+            // 
+            // black
+            // 
+            this.black.Location = new System.Drawing.Point(162, 478);
+            this.black.Name = "black";
+            this.black.Size = new System.Drawing.Size(56, 23);
+            this.black.TabIndex = 4;
+            this.black.Text = "black";
+            this.black.UseVisualStyleBackColor = true;
+            this.black.Click += new System.EventHandler(this.Black_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -107,6 +131,8 @@
         private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Button btnMinus;
         private System.Windows.Forms.Button btnPlus;
+        private System.Windows.Forms.Button eraser;
+        private System.Windows.Forms.Button black;
     }
 }
 
