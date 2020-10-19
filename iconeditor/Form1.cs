@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,7 +11,7 @@ using System.Windows.Forms;
 
 namespace iconeditor
 {
-    public partial class Form1 : Form
+    public partial class IconEditor : Form
     {
         Graphics graphics;
         int x = -1;
@@ -20,7 +21,11 @@ namespace iconeditor
         Brush brush = (Brush)Brushes.Black;
         int zoom = 1;
         bool initialized = false;
-        public Form1()
+        Bitmap bmp;
+
+        String[,] icon = new String[10,10];        
+
+        public IconEditor()
         {
             InitializeComponent();
 
@@ -28,6 +33,16 @@ namespace iconeditor
             pen = new Pen(Color.Black, 1);
             pen.StartCap = System.Drawing.Drawing2D.LineCap.Square;
             pen.EndCap = System.Drawing.Drawing2D.LineCap.Square;
+            bmp = new Bitmap(canvas.ClientSize.Width, canvas.ClientSize.Height);
+
+            for(int i = 0; i < 10; i++)
+            {
+                for(int k = 0; k < 10; k++)
+                {
+                    icon[i, k] = "#FFFFFF";
+                }
+            }
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -38,6 +53,7 @@ namespace iconeditor
         private void Panel1_Paint(object sender, PaintEventArgs e)
         {
             drawGrid();
+            //e.Graphics.DrawImage(bmp, Point.Empty);
         }
 
         private void drawGrid()
@@ -64,11 +80,30 @@ namespace iconeditor
             x = e.X;
             y = e.Y;
 
-            int rectangle_X = e.X / 100;
-            rectangle_X = rectangle_X * 100;
+            int selector_X = e.X / 100;
+            int rectangle_X = selector_X * 100;
 
-            int rectangle_Y = e.Y / 100;
-            rectangle_Y = rectangle_Y * 100;
+            int selector_Y = e.Y / 100;
+            int rectangle_Y = selector_Y * 100;
+
+            /*
+            using (Graphics g = Graphics.FromImage(bmp)) {
+                g.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
+            }
+            canvas.Invalidate();
+            */
+            Color c = new Pen(brush).Color;
+            string hexcolor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+            icon[selector_Y, selector_X] = hexcolor;
+            
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    Console.Write(" " + icon[i,j]);
+                }
+                Console.WriteLine();
+            }
             graphics.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
         }
 
@@ -76,15 +111,38 @@ namespace iconeditor
         {
             if(moving && x != -1 && y != -1)
             {
-                int rectangle_X = e.X / 100;
-                rectangle_X = rectangle_X * 100;
+                int selector_X = e.X / 100;
+                int rectangle_X = selector_X * 100;
 
-                int rectangle_Y = e.Y / 100;
-                rectangle_Y = rectangle_Y * 100;
-                graphics.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
+                int selector_Y = e.Y / 100;
+                int rectangle_Y = selector_Y * 100;
 
                 x = e.X;
                 y = e.Y;
+
+                /*
+                using (Graphics g = Graphics.FromImage(bmp))
+                {
+                    g.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
+                }
+                */
+
+                //canvas.Invalidate();
+
+                Color c = new Pen(brush).Color;
+                string hexcolor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
+                icon[selector_Y, selector_X] = hexcolor;
+
+                for (int i = 0; i < 10; i++)
+                {
+                    for (int j = 0; j < 10; j++)
+                    {
+                        Console.Write(" " + icon[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+
+                graphics.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
             }
         }
 
@@ -124,6 +182,35 @@ namespace iconeditor
         private void Black_Click(object sender, EventArgs e)
         {
             brush = (Brush)Brushes.Black;
+
+        }
+
+        private void DateiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            //Guid guid = new Guid();
+            //bmp.Save(guid.ToString() + ".png", ImageFormat.Png);
+
+            Graphics gtmp = Graphics.FromImage(bmp);
+            
+            SaveFileDialog dialog = new SaveFileDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                int width = Convert.ToInt32(canvas.Width);
+                int height = Convert.ToInt32(canvas.Height);
+                Bitmap bmp = new Bitmap(width, height);
+                //graphics.DrawToBitmap(bmp, new Rectangle(0, 0, width, height));
+                bmp.Save(dialog.FileName, ImageFormat.Jpeg);
+            }
+        }
+
+        private void BtnRed_Click(object sender, EventArgs e)
+        {
+            brush = (Brush)Brushes.Red;
 
         }
     }
