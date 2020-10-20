@@ -23,7 +23,8 @@ namespace iconeditor
         bool initialized = false;
         Bitmap bmp;
 
-        String[,] icon = new String[10,10];        
+        String[,] icon = new String[10, 10];
+        Color[,] image = new Color[10, 10];
 
         public IconEditor()
         {
@@ -40,6 +41,7 @@ namespace iconeditor
                 for(int k = 0; k < 10; k++)
                 {
                     icon[i, k] = "#FFFFFF";
+                    image[i, k] = Color.White;
                 }
             }
 
@@ -95,7 +97,8 @@ namespace iconeditor
             Color c = new Pen(brush).Color;
             string hexcolor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
             icon[selector_Y, selector_X] = hexcolor;
-            
+            image[selector_Y, selector_X] = c;
+
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 10; j++)
@@ -132,6 +135,7 @@ namespace iconeditor
                 Color c = new Pen(brush).Color;
                 string hexcolor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
                 icon[selector_Y, selector_X] = hexcolor;
+                image[selector_Y, selector_X] = c;
 
                 for (int i = 0; i < 10; i++)
                 {
@@ -194,9 +198,10 @@ namespace iconeditor
         {
             //Guid guid = new Guid();
             //bmp.Save(guid.ToString() + ".png", ImageFormat.Png);
-
+            /*
             Graphics gtmp = Graphics.FromImage(bmp);
-            
+
+            bmp = new Bitmap(canvas.ClientSize.Width, canvas.ClientSize.Height);
             SaveFileDialog dialog = new SaveFileDialog();
             if (dialog.ShowDialog() == DialogResult.OK)
             {
@@ -205,6 +210,31 @@ namespace iconeditor
                 Bitmap bmp = new Bitmap(width, height);
                 //graphics.DrawToBitmap(bmp, new Rectangle(0, 0, width, height));
                 bmp.Save(dialog.FileName, ImageFormat.Jpeg);
+            }
+            */
+
+
+            Bitmap bm = new Bitmap(10, 10);
+            using (Graphics gr = Graphics.FromImage(bm))
+            {
+                Color c;
+                for(int y = 0; y < 10; y++)
+                {
+                    for(int x = 0; x < 10; x++)
+                    {
+                        c = image[y, x];
+                        using (Pen p = new Pen(c, 1))
+                        {
+                            gr.DrawRectangle(p, x, y, 1, 1);
+                        }
+                    }
+                }
+
+                SaveFileDialog dialog = new SaveFileDialog();
+                if (dialog.ShowDialog() == DialogResult.OK)
+                {
+                    bm.Save(dialog.FileName, ImageFormat.Png);
+                }
             }
         }
 
