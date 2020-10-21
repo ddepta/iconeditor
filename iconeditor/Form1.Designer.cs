@@ -38,6 +38,8 @@
             this.dateiToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnRed = new System.Windows.Forms.Button();
+            this.btnUndo = new System.Windows.Forms.Button();
+            this.btnRedo = new System.Windows.Forms.Button();
             this.canvas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
             this.menuStrip2.SuspendLayout();
@@ -59,11 +61,11 @@
             // trackBar1
             // 
             this.trackBar1.LargeChange = 50;
-            this.trackBar1.Location = new System.Drawing.Point(12, 507);
+            this.trackBar1.Location = new System.Drawing.Point(3, 578);
             this.trackBar1.Maximum = 150;
             this.trackBar1.Minimum = 50;
             this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(530, 45);
+            this.trackBar1.Size = new System.Drawing.Size(752, 45);
             this.trackBar1.SmallChange = 10;
             this.trackBar1.TabIndex = 0;
             this.trackBar1.Value = 100;
@@ -71,12 +73,12 @@
             // 
             // black
             // 
+            this.black.BackColor = System.Drawing.Color.Black;
             this.black.Location = new System.Drawing.Point(158, 27);
             this.black.Name = "black";
-            this.black.Size = new System.Drawing.Size(56, 23);
+            this.black.Size = new System.Drawing.Size(23, 23);
             this.black.TabIndex = 4;
-            this.black.Text = "black";
-            this.black.UseVisualStyleBackColor = true;
+            this.black.UseVisualStyleBackColor = false;
             this.black.Click += new System.EventHandler(this.Black_Click);
             // 
             // eraser
@@ -137,19 +139,39 @@
             // 
             // btnRed
             // 
-            this.btnRed.Location = new System.Drawing.Point(220, 27);
+            this.btnRed.BackColor = System.Drawing.Color.Red;
+            this.btnRed.Location = new System.Drawing.Point(187, 27);
             this.btnRed.Name = "btnRed";
-            this.btnRed.Size = new System.Drawing.Size(56, 23);
+            this.btnRed.Size = new System.Drawing.Size(23, 23);
             this.btnRed.TabIndex = 6;
-            this.btnRed.Text = "red";
-            this.btnRed.UseVisualStyleBackColor = true;
+            this.btnRed.UseVisualStyleBackColor = false;
             this.btnRed.Click += new System.EventHandler(this.BtnRed_Click);
+            // 
+            // btnUndo
+            // 
+            this.btnUndo.Location = new System.Drawing.Point(595, 27);
+            this.btnUndo.Name = "btnUndo";
+            this.btnUndo.Size = new System.Drawing.Size(41, 23);
+            this.btnUndo.TabIndex = 7;
+            this.btnUndo.Text = "undo";
+            this.btnUndo.UseVisualStyleBackColor = true;
+            // 
+            // btnRedo
+            // 
+            this.btnRedo.Location = new System.Drawing.Point(642, 27);
+            this.btnRedo.Name = "btnRedo";
+            this.btnRedo.Size = new System.Drawing.Size(48, 23);
+            this.btnRedo.TabIndex = 8;
+            this.btnRedo.Text = "redo";
+            this.btnRedo.UseVisualStyleBackColor = true;
             // 
             // IconEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(782, 694);
+            this.Controls.Add(this.btnRedo);
+            this.Controls.Add(this.btnUndo);
             this.Controls.Add(this.btnRed);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnMinus);
@@ -183,6 +205,8 @@
         private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem1;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnRed;
+        private System.Windows.Forms.Button btnUndo;
+        private System.Windows.Forms.Button btnRedo;
     }
 }
 

@@ -23,8 +23,9 @@ namespace iconeditor
         bool initialized = false;
         Bitmap bmp;
 
-        String[,] icon = new String[10, 10];
-        Color[,] image = new Color[10, 10];
+        Color[,] icon = new Color[10, 10];
+
+        List<Color[,]> hist = new List<Color[,]>();
 
         public IconEditor()
         {
@@ -40,11 +41,11 @@ namespace iconeditor
             {
                 for(int k = 0; k < 10; k++)
                 {
-                    icon[i, k] = "#FFFFFF";
-                    image[i, k] = Color.White;
+                    icon[i, k] = Color.White;
                 }
             }
 
+            hist.Add(icon);
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -95,15 +96,14 @@ namespace iconeditor
             canvas.Invalidate();
             */
             Color c = new Pen(brush).Color;
-            string hexcolor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
-            icon[selector_Y, selector_X] = hexcolor;
-            image[selector_Y, selector_X] = c;
+
+            icon[selector_Y, selector_X] = c;
 
             for (int i = 0; i < 10; i++)
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    Console.Write(" " + icon[i,j]);
+                    Console.Write(" " + icon[i,j].ToString());
                 }
                 Console.WriteLine();
             }
@@ -123,25 +123,14 @@ namespace iconeditor
                 x = e.X;
                 y = e.Y;
 
-                /*
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    g.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
-                }
-                */
-
-                //canvas.Invalidate();
-
                 Color c = new Pen(brush).Color;
-                string hexcolor = "#" + c.R.ToString("X2") + c.G.ToString("X2") + c.B.ToString("X2");
-                icon[selector_Y, selector_X] = hexcolor;
-                image[selector_Y, selector_X] = c;
+                icon[selector_Y, selector_X] = c;
 
                 for (int i = 0; i < 10; i++)
                 {
                     for (int j = 0; j < 10; j++)
                     {
-                        Console.Write(" " + icon[i, j]);
+                        Console.Write(" " + icon[i, j].ToString());
                     }
                     Console.WriteLine();
                 }
@@ -156,6 +145,7 @@ namespace iconeditor
             x = -1;
             y = -1;
             drawGrid();
+            hist.Add(icon);
         }
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
@@ -196,24 +186,6 @@ namespace iconeditor
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            //Guid guid = new Guid();
-            //bmp.Save(guid.ToString() + ".png", ImageFormat.Png);
-            /*
-            Graphics gtmp = Graphics.FromImage(bmp);
-
-            bmp = new Bitmap(canvas.ClientSize.Width, canvas.ClientSize.Height);
-            SaveFileDialog dialog = new SaveFileDialog();
-            if (dialog.ShowDialog() == DialogResult.OK)
-            {
-                int width = Convert.ToInt32(canvas.Width);
-                int height = Convert.ToInt32(canvas.Height);
-                Bitmap bmp = new Bitmap(width, height);
-                //graphics.DrawToBitmap(bmp, new Rectangle(0, 0, width, height));
-                bmp.Save(dialog.FileName, ImageFormat.Jpeg);
-            }
-            */
-
-
             Bitmap bm = new Bitmap(10, 10);
             using (Graphics gr = Graphics.FromImage(bm))
             {
@@ -222,7 +194,7 @@ namespace iconeditor
                 {
                     for(int x = 0; x < 10; x++)
                     {
-                        c = image[y, x];
+                        c = icon[y, x];
                         using (Pen p = new Pen(c, 1))
                         {
                             gr.DrawRectangle(p, x, y, 1, 1);
