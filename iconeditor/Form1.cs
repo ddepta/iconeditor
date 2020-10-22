@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,6 +17,9 @@ namespace iconeditor
         Graphics graphics;
         int x = -1;
         int y = -1;
+        byte x_size = 16;
+        byte y_size = 16;
+
         bool moving = false;
         Pen pen;
         Brush brush = (Brush)Brushes.Black;
@@ -23,7 +27,7 @@ namespace iconeditor
         bool initialized = false;
         Bitmap bmp;
 
-        Color[,] icon = new Color[10, 10];
+        Color[,] icon = new Color[64, 64];
 
         List<Color[,]> hist = new List<Color[,]>();
 
@@ -31,21 +35,31 @@ namespace iconeditor
         {
             InitializeComponent();
 
+            tbX.Text = x_size.ToString();
+            tbY.Text = y_size.ToString();
+
             graphics = canvas.CreateGraphics();
             pen = new Pen(Color.Black, 1);
             pen.StartCap = System.Drawing.Drawing2D.LineCap.Square;
             pen.EndCap = System.Drawing.Drawing2D.LineCap.Square;
             bmp = new Bitmap(canvas.ClientSize.Width, canvas.ClientSize.Height);
 
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < x_size; i++)
             {
-                for(int k = 0; k < 10; k++)
+                for(int k = 0; k < y_size; k++)
                 {
                     icon[i, k] = Color.White;
                 }
             }
 
             hist.Add(icon);
+        }
+
+        private void CalculatePixels()
+        {
+            int canvas_width = ClientSize.Width - 40;
+            int canvas_height = ClientSize.Height - 107;
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -214,6 +228,22 @@ namespace iconeditor
         {
             brush = (Brush)Brushes.Red;
 
+        }
+
+        private void BildToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CanvasSizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BtnRefreshSize_Click(object sender, EventArgs e)
+        {
+            x_size = Convert.ToByte(tbX.Text);
+            y_size = Convert.ToByte(tbY.Text);
         }
     }
 }

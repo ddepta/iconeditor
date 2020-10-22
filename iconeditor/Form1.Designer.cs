@@ -29,47 +29,40 @@
         private void InitializeComponent()
         {
             this.canvas = new System.Windows.Forms.Panel();
-            this.trackBar1 = new System.Windows.Forms.TrackBar();
             this.black = new System.Windows.Forms.Button();
             this.eraser = new System.Windows.Forms.Button();
             this.btnPlus = new System.Windows.Forms.Button();
             this.btnMinus = new System.Windows.Forms.Button();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.bildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
+            this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnRed = new System.Windows.Forms.Button();
             this.btnUndo = new System.Windows.Forms.Button();
             this.btnRedo = new System.Windows.Forms.Button();
-            this.canvas.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).BeginInit();
+            this.lbX = new System.Windows.Forms.Label();
+            this.tbX = new System.Windows.Forms.TextBox();
+            this.lbPixel1 = new System.Windows.Forms.Label();
+            this.lbPx2 = new System.Windows.Forms.Label();
+            this.tbY = new System.Windows.Forms.TextBox();
+            this.lbY = new System.Windows.Forms.Label();
+            this.btnRefreshSize = new System.Windows.Forms.Button();
             this.menuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // canvas
             // 
             this.canvas.BackColor = System.Drawing.Color.White;
-            this.canvas.Controls.Add(this.trackBar1);
             this.canvas.Location = new System.Drawing.Point(12, 56);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(758, 626);
+            this.canvas.Size = new System.Drawing.Size(800, 800);
             this.canvas.TabIndex = 0;
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Panel1_Paint);
             this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
             this.canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
-            // 
-            // trackBar1
-            // 
-            this.trackBar1.LargeChange = 50;
-            this.trackBar1.Location = new System.Drawing.Point(3, 578);
-            this.trackBar1.Maximum = 150;
-            this.trackBar1.Minimum = 50;
-            this.trackBar1.Name = "trackBar1";
-            this.trackBar1.Size = new System.Drawing.Size(752, 45);
-            this.trackBar1.SmallChange = 10;
-            this.trackBar1.TabIndex = 0;
-            this.trackBar1.Value = 100;
-            this.trackBar1.Scroll += new System.EventHandler(this.TrackBar1_Scroll);
             // 
             // black
             // 
@@ -114,18 +107,39 @@
             // menuStrip2
             // 
             this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dateiToolStripMenuItem1});
+            this.dateiToolStripMenuItem1,
+            this.bildToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(0, 0);
             this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(782, 24);
+            this.menuStrip2.Size = new System.Drawing.Size(824, 24);
             this.menuStrip2.TabIndex = 2;
             this.menuStrip2.Text = "menuStrip2";
             // 
             // dateiToolStripMenuItem1
             // 
             this.dateiToolStripMenuItem1.Name = "dateiToolStripMenuItem1";
-            this.dateiToolStripMenuItem1.Size = new System.Drawing.Size(46, 20);
-            this.dateiToolStripMenuItem1.Text = "Datei";
+            this.dateiToolStripMenuItem1.Size = new System.Drawing.Size(42, 20);
+            this.dateiToolStripMenuItem1.Text = "Files";
+            // 
+            // bildToolStripMenuItem
+            // 
+            this.bildToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripTextBox1,
+            this.toolStripTextBox2});
+            this.bildToolStripMenuItem.Name = "bildToolStripMenuItem";
+            this.bildToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
+            this.bildToolStripMenuItem.Text = "Image Size";
+            this.bildToolStripMenuItem.Click += new System.EventHandler(this.BildToolStripMenuItem_Click);
+            // 
+            // toolStripTextBox1
+            // 
+            this.toolStripTextBox1.Name = "toolStripTextBox1";
+            this.toolStripTextBox1.Size = new System.Drawing.Size(100, 23);
+            // 
+            // toolStripTextBox2
+            // 
+            this.toolStripTextBox2.Name = "toolStripTextBox2";
+            this.toolStripTextBox2.Size = new System.Drawing.Size(100, 23);
             // 
             // btnSave
             // 
@@ -165,11 +179,78 @@
             this.btnRedo.Text = "redo";
             this.btnRedo.UseVisualStyleBackColor = true;
             // 
+            // lbX
+            // 
+            this.lbX.AutoSize = true;
+            this.lbX.Location = new System.Drawing.Point(248, 32);
+            this.lbX.Name = "lbX";
+            this.lbX.Size = new System.Drawing.Size(17, 13);
+            this.lbX.TabIndex = 9;
+            this.lbX.Text = "X:";
+            // 
+            // tbX
+            // 
+            this.tbX.Location = new System.Drawing.Point(271, 29);
+            this.tbX.Name = "tbX";
+            this.tbX.Size = new System.Drawing.Size(20, 20);
+            this.tbX.TabIndex = 10;
+            // 
+            // lbPixel1
+            // 
+            this.lbPixel1.AutoSize = true;
+            this.lbPixel1.Location = new System.Drawing.Point(297, 33);
+            this.lbPixel1.Name = "lbPixel1";
+            this.lbPixel1.Size = new System.Drawing.Size(18, 13);
+            this.lbPixel1.TabIndex = 11;
+            this.lbPixel1.Text = "px";
+            // 
+            // lbPx2
+            // 
+            this.lbPx2.AutoSize = true;
+            this.lbPx2.Location = new System.Drawing.Point(386, 33);
+            this.lbPx2.Name = "lbPx2";
+            this.lbPx2.Size = new System.Drawing.Size(18, 13);
+            this.lbPx2.TabIndex = 14;
+            this.lbPx2.Text = "px";
+            // 
+            // tbY
+            // 
+            this.tbY.Location = new System.Drawing.Point(360, 30);
+            this.tbY.Name = "tbY";
+            this.tbY.Size = new System.Drawing.Size(20, 20);
+            this.tbY.TabIndex = 13;
+            // 
+            // lbY
+            // 
+            this.lbY.AutoSize = true;
+            this.lbY.Location = new System.Drawing.Point(337, 32);
+            this.lbY.Name = "lbY";
+            this.lbY.Size = new System.Drawing.Size(17, 13);
+            this.lbY.TabIndex = 12;
+            this.lbY.Text = "Y:";
+            // 
+            // btnRefreshSize
+            // 
+            this.btnRefreshSize.Location = new System.Drawing.Point(423, 28);
+            this.btnRefreshSize.Name = "btnRefreshSize";
+            this.btnRefreshSize.Size = new System.Drawing.Size(56, 23);
+            this.btnRefreshSize.TabIndex = 15;
+            this.btnRefreshSize.Text = "Refresh";
+            this.btnRefreshSize.UseVisualStyleBackColor = true;
+            this.btnRefreshSize.Click += new System.EventHandler(this.BtnRefreshSize_Click);
+            // 
             // IconEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(782, 694);
+            this.ClientSize = new System.Drawing.Size(824, 868);
+            this.Controls.Add(this.btnRefreshSize);
+            this.Controls.Add(this.lbPx2);
+            this.Controls.Add(this.tbY);
+            this.Controls.Add(this.lbY);
+            this.Controls.Add(this.lbPixel1);
+            this.Controls.Add(this.tbX);
+            this.Controls.Add(this.lbX);
             this.Controls.Add(this.btnRedo);
             this.Controls.Add(this.btnUndo);
             this.Controls.Add(this.btnRed);
@@ -183,9 +264,6 @@
             this.Name = "IconEditor";
             this.Text = "Icon-Editor";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.canvas.ResumeLayout(false);
-            this.canvas.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.trackBar1)).EndInit();
             this.menuStrip2.ResumeLayout(false);
             this.menuStrip2.PerformLayout();
             this.ResumeLayout(false);
@@ -196,7 +274,6 @@
         #endregion
 
         private System.Windows.Forms.Panel canvas;
-        private System.Windows.Forms.TrackBar trackBar1;
         private System.Windows.Forms.Button btnMinus;
         private System.Windows.Forms.Button btnPlus;
         private System.Windows.Forms.Button eraser;
@@ -207,6 +284,16 @@
         private System.Windows.Forms.Button btnRed;
         private System.Windows.Forms.Button btnUndo;
         private System.Windows.Forms.Button btnRedo;
+        private System.Windows.Forms.ToolStripMenuItem bildToolStripMenuItem;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
+        private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;
+        private System.Windows.Forms.Label lbX;
+        private System.Windows.Forms.TextBox tbX;
+        private System.Windows.Forms.Label lbPixel1;
+        private System.Windows.Forms.Label lbPx2;
+        private System.Windows.Forms.TextBox tbY;
+        private System.Windows.Forms.Label lbY;
+        private System.Windows.Forms.Button btnRefreshSize;
     }
 }
 
