@@ -19,6 +19,9 @@ namespace iconeditor
         int y = -1;
         byte x_size = 16;
         byte y_size = 16;
+        int canvas_width = 0;
+        int canvas_height = 0;
+        int canvas_pixelsize;
 
         bool moving = false;
         Pen pen;
@@ -53,13 +56,23 @@ namespace iconeditor
             }
 
             hist.Add(icon);
+            CalculatePixels();
         }
 
         private void CalculatePixels()
         {
-            int canvas_width = ClientSize.Width - 40;
-            int canvas_height = ClientSize.Height - 107;
+            canvas_width = ClientSize.Width - 40;
+            canvas_height = ClientSize.Height - 107;
+            int canvas_pixelsize_width = (canvas_width / x_size) - 1;
+            int canvas_pixelsize_height = (canvas_height / y_size) - 1;
+            
+            canvas_pixelsize = canvas_pixelsize_width.CompareTo(canvas_pixelsize_height) == 1 ? canvas_pixelsize_height : canvas_pixelsize_width;
 
+            canvas_width = (canvas_pixelsize * x_size) + (x_size - 1);
+            canvas_height = (canvas_pixelsize * y_size) + (y_size - 1);
+
+            Size panelSize = new Size(canvas_width, canvas_height);
+            canvas.Size = panelSize;
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -75,40 +88,39 @@ namespace iconeditor
 
         private void drawGrid()
         {
-            Pen dashedPen = new Pen(Color.Pink, 2);
+            Pen dashedPen = new Pen(Color.Pink, 1);
             dashedPen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
-            dashedPen.DashOffset = 10;
+            dashedPen.DashOffset = 50;
             dashedPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
 
-            graphics.DrawLine(dashedPen, 1, 100, 500, 100);
-            graphics.DrawLine(dashedPen, 1, 200, 500, 200);
-            graphics.DrawLine(dashedPen, 1, 300, 500, 300);
-            graphics.DrawLine(dashedPen, 1, 400, 500, 400);
+            for (int i = 1; i < x_size; i++)
+            {
+                graphics.DrawLine(dashedPen, 1, canvas_pixelsize * i + i - 1, canvas_width, canvas_pixelsize * i + i - 1);
+            }
 
-            graphics.DrawLine(dashedPen, 100, 1, 100, 500);
-            graphics.DrawLine(dashedPen, 200, 1, 200, 500);
-            graphics.DrawLine(dashedPen, 300, 1, 300, 500);
-            graphics.DrawLine(dashedPen, 400, 1, 400, 500);
+            for (int i = 1; i < y_size; i++)
+            {
+                graphics.DrawLine(dashedPen, canvas_pixelsize * i + i - 1, 1, canvas_pixelsize * i + i - 1, canvas_height);
+            }
         }
 
         private void Canvas_MouseDown(object sender, MouseEventArgs e)
         {
             moving = true;
+            DrawPixel(e);
+        }
+
+        private void DrawPixel(MouseEventArgs e)
+        {
             x = e.X;
             y = e.Y;
 
-            int selector_X = e.X / 100;
-            int rectangle_X = selector_X * 100;
+            int selector_X = e.X / (canvas_pixelsize + 1);
+            int rectangle_X = selector_X * (canvas_pixelsize + 1);
 
-            int selector_Y = e.Y / 100;
-            int rectangle_Y = selector_Y * 100;
+            int selector_Y = e.Y / (canvas_pixelsize + 1);
+            int rectangle_Y = selector_Y * (canvas_pixelsize + 1);
 
-            /*
-            using (Graphics g = Graphics.FromImage(bmp)) {
-                g.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
-            }
-            canvas.Invalidate();
-            */
             Color c = new Pen(brush).Color;
 
             icon[selector_Y, selector_X] = c;
@@ -117,39 +129,19 @@ namespace iconeditor
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    Console.Write(" " + icon[i,j].ToString());
+                    Console.Write(" " + icon[i, j].ToString());
                 }
                 Console.WriteLine();
             }
-            graphics.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
+
+            graphics.FillRectangle(brush, rectangle_X, rectangle_Y, canvas_pixelsize, canvas_pixelsize);
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
         {
             if(moving && x != -1 && y != -1)
             {
-                int selector_X = e.X / 100;
-                int rectangle_X = selector_X * 100;
-
-                int selector_Y = e.Y / 100;
-                int rectangle_Y = selector_Y * 100;
-
-                x = e.X;
-                y = e.Y;
-
-                Color c = new Pen(brush).Color;
-                icon[selector_Y, selector_X] = c;
-
-                for (int i = 0; i < 10; i++)
-                {
-                    for (int j = 0; j < 10; j++)
-                    {
-                        Console.Write(" " + icon[i, j].ToString());
-                    }
-                    Console.WriteLine();
-                }
-
-                graphics.FillRectangle(brush, rectangle_X, rectangle_Y, 100, 100);
+                DrawPixel(e);
             }
         }
 
