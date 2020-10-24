@@ -19,6 +19,8 @@ namespace iconeditor
         int y = -1;
         byte x_size = 16;
         byte y_size = 16;
+        byte max_x_size = 64;
+        byte max_y_size = 64;
         int canvas_width = 0;
         int canvas_height = 0;
         int canvas_pixelsize;
@@ -32,7 +34,8 @@ namespace iconeditor
 
         Color[,] icon = new Color[64, 64];
 
-        List<Color[,]> hist = new List<Color[,]>();
+        List<Color[,]> history = new List<Color[,]>();
+        int historyPosition = 0;
 
         public IconEditor()
         {
@@ -47,22 +50,28 @@ namespace iconeditor
             pen.EndCap = System.Drawing.Drawing2D.LineCap.Square;
             bmp = new Bitmap(canvas.ClientSize.Width, canvas.ClientSize.Height);
 
-            for(int i = 0; i < x_size; i++)
+            ClearCanvas();
+            Color[,] _icon = (Color[,])icon.Clone();
+            history.Add(_icon);
+            CalculatePixels();
+            drawGrid();
+        }
+
+        private void ClearCanvas()
+        {
+            for (int i = 0; i < max_x_size; i++)
             {
-                for(int k = 0; k < y_size; k++)
+                for (int k = 0; k < max_y_size; k++)
                 {
                     icon[i, k] = Color.White;
                 }
             }
-
-            hist.Add(icon);
-            CalculatePixels();
         }
 
         private void CalculatePixels()
         {
-            canvas_width = ClientSize.Width - 40;
-            canvas_height = ClientSize.Height - 107;
+            canvas_width = Size.Width - 40;
+            canvas_height = Size.Height - 107;
             int canvas_pixelsize_width = (canvas_width / x_size) - 1;
             int canvas_pixelsize_height = (canvas_height / y_size) - 1;
             
@@ -83,6 +92,7 @@ namespace iconeditor
         private void Panel1_Paint(object sender, PaintEventArgs e)
         {
             drawGrid();
+            redrawPixels();
             //e.Graphics.DrawImage(bmp, Point.Empty);
         }
 
@@ -95,12 +105,12 @@ namespace iconeditor
 
             for (int i = 1; i < x_size; i++)
             {
-                graphics.DrawLine(dashedPen, 1, canvas_pixelsize * i + i - 1, canvas_width, canvas_pixelsize * i + i - 1);
+                graphics.DrawLine(dashedPen, canvas_pixelsize * i + i - 1, 1, canvas_pixelsize * i + i - 1, canvas_height);
             }
 
             for (int i = 1; i < y_size; i++)
             {
-                graphics.DrawLine(dashedPen, canvas_pixelsize * i + i - 1, 1, canvas_pixelsize * i + i - 1, canvas_height);
+                graphics.DrawLine(dashedPen, 1, canvas_pixelsize * i + i - 1, canvas_width, canvas_pixelsize * i + i - 1);
             }
         }
 
@@ -114,6 +124,8 @@ namespace iconeditor
         {
             x = e.X;
             y = e.Y;
+            //TODO: negative selectoren abfangen
+            //also zu kleine und zu große (über 800px)
 
             int selector_X = e.X / (canvas_pixelsize + 1);
             int rectangle_X = selector_X * (canvas_pixelsize + 1);
@@ -124,17 +136,32 @@ namespace iconeditor
             Color c = new Pen(brush).Color;
 
             icon[selector_Y, selector_X] = c;
-
-            for (int i = 0; i < 10; i++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    Console.Write(" " + icon[i, j].ToString());
-                }
-                Console.WriteLine();
-            }
-
+            
             graphics.FillRectangle(brush, rectangle_X, rectangle_Y, canvas_pixelsize, canvas_pixelsize);
+        }
+
+        private void redrawPixels(Color[,] previousIcon = null)
+        {
+            Brush redrawBrush;
+            Color[,] tmpIcon;
+
+                tmpIcon = icon;
+
+            for (int y = 0; y < y_size; y++)
+            {
+                for (int x = 0; x < x_size; x++)
+                {
+                    Color c = tmpIcon[y, x];
+                    if(c != Color.White)
+                    {
+                        redrawBrush = new SolidBrush(c);
+                        int rectangle_X = x * (canvas_pixelsize + 1);
+                        int rectangle_Y = y * (canvas_pixelsize + 1);
+
+                        graphics.FillRectangle(redrawBrush, rectangle_X, rectangle_Y, canvas_pixelsize, canvas_pixelsize);
+                    }
+                }
+            }
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
@@ -150,8 +177,10 @@ namespace iconeditor
             moving = false;
             x = -1;
             y = -1;
-            drawGrid();
-            hist.Add(icon);
+            //drawGrid();
+            Color[,] _icon = (Color[,])icon.Clone();
+            history.Add(_icon);
+            historyPosition++;
         }
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
@@ -234,8 +263,84 @@ namespace iconeditor
 
         private void BtnRefreshSize_Click(object sender, EventArgs e)
         {
-            x_size = Convert.ToByte(tbX.Text);
-            y_size = Convert.ToByte(tbY.Text);
+            string message = "You'll lose the undo-history, do you want to continue?";
+            string caption = "Resize canvas";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            MessageBoxIcon messageBoxIcon = MessageBoxIcon.Exclamation;
+            DialogResult result;
+
+            result = MessageBox.Show(message, caption, buttons, messageBoxIcon);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                x_size = Convert.ToByte(tbX.Text);
+                y_size = Convert.ToByte(tbY.Text);
+                CalculatePixels();
+                canvas.Invalidate();
+            }
+        }
+
+        private void IconEditor_ResizeEnd(object sender, EventArgs e)
+        {
+            /*
+            int tmp_width = canvas_width;
+            int tmp_height = canvas_height;
+            CalculatePixels();
+
+            if(tmp_width != canvas_width || tmp_height != canvas_height)
+            {
+                canvas.Invalidate();
+            }
+            */
+        }
+
+        private void IconEditor_ResizeBegin(object sender, EventArgs e)
+        {
+
+        }
+
+        private void IconEditor_Resize(object sender, EventArgs e)
+        {
+            int tmp_width = canvas_width;
+            int tmp_height = canvas_height;
+            CalculatePixels();
+
+            if (tmp_width != canvas_width || tmp_height != canvas_height)
+            {
+                canvas.Invalidate();
+            }
+
+        }
+
+        private void BtnClear_Click(object sender, EventArgs e)
+        {
+            string message = "Do you want to clear the canvas?";
+            string caption = "Clear canvas";
+            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
+            MessageBoxIcon messageBoxIcon = MessageBoxIcon.Exclamation;
+            DialogResult result;
+
+            result = MessageBox.Show(message, caption, buttons, messageBoxIcon);
+            if (result == System.Windows.Forms.DialogResult.Yes)
+            {
+                ClearCanvas();
+                canvas.Invalidate();
+            }
+        }
+
+        private void BtnUndo_Click(object sender, EventArgs e)
+        {
+            if(historyPosition > 0)
+            {
+                historyPosition--;
+                icon = history[historyPosition];
+                canvas.Invalidate();
+                redrawPixels();
+            }
+
+            if(historyPosition == 0)
+            {
+                btnUndo.Enabled = false;
+            }
         }
     }
 }

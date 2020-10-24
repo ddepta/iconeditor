@@ -31,8 +31,6 @@
             this.canvas = new System.Windows.Forms.Panel();
             this.black = new System.Windows.Forms.Button();
             this.eraser = new System.Windows.Forms.Button();
-            this.btnPlus = new System.Windows.Forms.Button();
-            this.btnMinus = new System.Windows.Forms.Button();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.bildToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +47,7 @@
             this.tbY = new System.Windows.Forms.TextBox();
             this.lbY = new System.Windows.Forms.Label();
             this.btnRefreshSize = new System.Windows.Forms.Button();
+            this.btnClear = new System.Windows.Forms.Button();
             this.menuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,7 +56,7 @@
             this.canvas.BackColor = System.Drawing.Color.White;
             this.canvas.Location = new System.Drawing.Point(12, 56);
             this.canvas.Name = "canvas";
-            this.canvas.Size = new System.Drawing.Size(800, 800);
+            this.canvas.Size = new System.Drawing.Size(1780, 1244);
             this.canvas.TabIndex = 0;
             this.canvas.Paint += new System.Windows.Forms.PaintEventHandler(this.Panel1_Paint);
             this.canvas.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseDown);
@@ -67,7 +66,7 @@
             // black
             // 
             this.black.BackColor = System.Drawing.Color.Black;
-            this.black.Location = new System.Drawing.Point(158, 27);
+            this.black.Location = new System.Drawing.Point(190, 27);
             this.black.Name = "black";
             this.black.Size = new System.Drawing.Size(23, 23);
             this.black.TabIndex = 4;
@@ -76,33 +75,13 @@
             // 
             // eraser
             // 
-            this.eraser.Location = new System.Drawing.Point(96, 27);
+            this.eraser.Location = new System.Drawing.Point(128, 27);
             this.eraser.Name = "eraser";
             this.eraser.Size = new System.Drawing.Size(56, 23);
             this.eraser.TabIndex = 3;
             this.eraser.Text = "Eraser";
             this.eraser.UseVisualStyleBackColor = true;
             this.eraser.Click += new System.EventHandler(this.Eraser_Click);
-            // 
-            // btnPlus
-            // 
-            this.btnPlus.Location = new System.Drawing.Point(747, 27);
-            this.btnPlus.Name = "btnPlus";
-            this.btnPlus.Size = new System.Drawing.Size(23, 23);
-            this.btnPlus.TabIndex = 2;
-            this.btnPlus.Text = "+";
-            this.btnPlus.UseVisualStyleBackColor = true;
-            this.btnPlus.Click += new System.EventHandler(this.BtnPlus_Click);
-            // 
-            // btnMinus
-            // 
-            this.btnMinus.Location = new System.Drawing.Point(717, 27);
-            this.btnMinus.Name = "btnMinus";
-            this.btnMinus.Size = new System.Drawing.Size(23, 23);
-            this.btnMinus.TabIndex = 1;
-            this.btnMinus.Text = "-";
-            this.btnMinus.UseVisualStyleBackColor = true;
-            this.btnMinus.Click += new System.EventHandler(this.BtnMinus_Click);
             // 
             // menuStrip2
             // 
@@ -154,7 +133,7 @@
             // btnRed
             // 
             this.btnRed.BackColor = System.Drawing.Color.Red;
-            this.btnRed.Location = new System.Drawing.Point(187, 27);
+            this.btnRed.Location = new System.Drawing.Point(219, 27);
             this.btnRed.Name = "btnRed";
             this.btnRed.Size = new System.Drawing.Size(23, 23);
             this.btnRed.TabIndex = 6;
@@ -169,6 +148,7 @@
             this.btnUndo.TabIndex = 7;
             this.btnUndo.Text = "undo";
             this.btnUndo.UseVisualStyleBackColor = true;
+            this.btnUndo.Click += new System.EventHandler(this.BtnUndo_Click);
             // 
             // btnRedo
             // 
@@ -235,15 +215,26 @@
             this.btnRefreshSize.Name = "btnRefreshSize";
             this.btnRefreshSize.Size = new System.Drawing.Size(56, 23);
             this.btnRefreshSize.TabIndex = 15;
-            this.btnRefreshSize.Text = "Refresh";
+            this.btnRefreshSize.Text = "Resize";
             this.btnRefreshSize.UseVisualStyleBackColor = true;
             this.btnRefreshSize.Click += new System.EventHandler(this.BtnRefreshSize_Click);
+            // 
+            // btnClear
+            // 
+            this.btnClear.Location = new System.Drawing.Point(69, 27);
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(56, 23);
+            this.btnClear.TabIndex = 16;
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = true;
+            this.btnClear.Click += new System.EventHandler(this.BtnClear_Click);
             // 
             // IconEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(824, 868);
+            this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnRefreshSize);
             this.Controls.Add(this.lbPx2);
             this.Controls.Add(this.tbY);
@@ -255,8 +246,6 @@
             this.Controls.Add(this.btnUndo);
             this.Controls.Add(this.btnRed);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnMinus);
-            this.Controls.Add(this.btnPlus);
             this.Controls.Add(this.black);
             this.Controls.Add(this.canvas);
             this.Controls.Add(this.eraser);
@@ -264,6 +253,8 @@
             this.Name = "IconEditor";
             this.Text = "Icon-Editor";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.ResizeEnd += new System.EventHandler(this.IconEditor_ResizeEnd);
+            this.Resize += new System.EventHandler(this.IconEditor_Resize);
             this.menuStrip2.ResumeLayout(false);
             this.menuStrip2.PerformLayout();
             this.ResumeLayout(false);
@@ -274,8 +265,6 @@
         #endregion
 
         private System.Windows.Forms.Panel canvas;
-        private System.Windows.Forms.Button btnMinus;
-        private System.Windows.Forms.Button btnPlus;
         private System.Windows.Forms.Button eraser;
         private System.Windows.Forms.Button black;
         private System.Windows.Forms.MenuStrip menuStrip2;
@@ -294,6 +283,7 @@
         private System.Windows.Forms.TextBox tbY;
         private System.Windows.Forms.Label lbY;
         private System.Windows.Forms.Button btnRefreshSize;
+        private System.Windows.Forms.Button btnClear;
     }
 }
 
