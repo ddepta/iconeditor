@@ -33,9 +33,13 @@ namespace iconeditor
         Bitmap bmp;
 
         Color[,] icon = new Color[64, 64];
+        Color[,] redoState = new Color[64, 64];
+        string[,] fuckoff = new string[64, 64];
 
         List<Color[,]> history = new List<Color[,]>();
         int historyPosition = 0;
+
+        List<string[,]> fuckoff_history = new List<string[,]>();
 
         public IconEditor()
         {
@@ -64,6 +68,8 @@ namespace iconeditor
                 for (int k = 0; k < max_y_size; k++)
                 {
                     icon[i, k] = Color.White;
+                    redoState[i, k] = Color.White;
+                    //icon[i, k] = Color.White.R
                 }
             }
         }
@@ -136,6 +142,8 @@ namespace iconeditor
             Color c = new Pen(brush).Color;
 
             icon[selector_Y, selector_X] = c;
+            Array.Clear(redoState, 0, redoState.Length);
+            redoState[selector_Y, selector_X] = c;
             
             graphics.FillRectangle(brush, rectangle_X, rectangle_Y, canvas_pixelsize, canvas_pixelsize);
         }
@@ -178,9 +186,49 @@ namespace iconeditor
             x = -1;
             y = -1;
             //drawGrid();
-            Color[,] _icon = (Color[,])icon.Clone();
-            history.Add(_icon);
-            historyPosition++;
+            Color[,] _icon = new Color[64,64];
+            for(int y = 0; y < max_y_size; y++)
+            {
+                for (int x = 0; x < max_x_size; x++)
+                {
+                    string redHex = ColorTranslator.ToHtml(icon[y, x]);
+                    _icon[y, x] = ColorTranslator.FromHtml(redHex);
+                }
+            }
+
+
+            var tmphistory = history;
+
+            if (historyPosition + 1 < history.Count)
+            {
+                history.RemoveRange(historyPosition, history.Count - (historyPosition));
+                Color[,] newIcon = new Color[64,64];
+                for(int y = 0; y < max_y_size; y++)
+                {
+                    for (int x = 0; x < max_x_size; x++)
+                    {
+                        if(icon[y, x] == redoState[y, x])
+                        {
+                            newIcon[y, x] = history[historyPosition - 1][y, x];
+                        }
+                        else
+                        {
+                            newIcon[y, x] = icon[y, x];
+                        }
+                    }
+                }
+                history.Add(newIcon);
+                history.Add(icon);
+                historyPosition =history.Count() - 1;
+
+            }
+            else
+            {
+                history.Add(_icon);
+                historyPosition++;
+            }
+
+            ToggleUndoRedoButtons();
         }
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
@@ -311,6 +359,12 @@ namespace iconeditor
 
         }
 
+        private void ToggleUndoRedoButtons()
+        {
+            btnUndo.Enabled = historyPosition != 0;
+            btnRedo.Enabled = historyPosition + 1 < history.Count;
+        }
+
         private void BtnClear_Click(object sender, EventArgs e)
         {
             string message = "Do you want to clear the canvas?";
@@ -337,10 +391,21 @@ namespace iconeditor
                 redrawPixels();
             }
 
-            if(historyPosition == 0)
+            bool activateRedoButton = true;
+            ToggleUndoRedoButtons();
+        }
+
+        private void BtnRedo_Click(object sender, EventArgs e)
+        {
+            if(historyPosition < history.Count)
             {
-                btnUndo.Enabled = false;
+                historyPosition++;
+                icon = history[historyPosition];
+                canvas.Invalidate();
+                redrawPixels();
             }
+            ToggleUndoRedoButtons();
+
         }
     }
 }

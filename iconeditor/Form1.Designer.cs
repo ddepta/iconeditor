@@ -142,6 +142,7 @@
             // 
             // btnUndo
             // 
+            this.btnUndo.Enabled = false;
             this.btnUndo.Location = new System.Drawing.Point(595, 27);
             this.btnUndo.Name = "btnUndo";
             this.btnUndo.Size = new System.Drawing.Size(41, 23);
@@ -152,12 +153,14 @@
             // 
             // btnRedo
             // 
+            this.btnRedo.Enabled = false;
             this.btnRedo.Location = new System.Drawing.Point(642, 27);
             this.btnRedo.Name = "btnRedo";
             this.btnRedo.Size = new System.Drawing.Size(48, 23);
             this.btnRedo.TabIndex = 8;
             this.btnRedo.Text = "redo";
             this.btnRedo.UseVisualStyleBackColor = true;
+            this.btnRedo.Click += new System.EventHandler(this.BtnRedo_Click);
             // 
             // lbX
             // 
