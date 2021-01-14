@@ -38,6 +38,7 @@ namespace iconeditor
 
         List<Color[,]> history = new List<Color[,]>();
         int historyPosition = 0;
+        int maxHistoryPosition = 0;
 
         List<string[,]> fuckoff_history = new List<string[,]>();
 
@@ -199,7 +200,7 @@ namespace iconeditor
 
             var tmphistory = history;
 
-            if (historyPosition + 1 < history.Count)
+            if (historyPosition < maxHistoryPosition)
             {
                 history.RemoveRange(historyPosition, history.Count - (historyPosition));
                 Color[,] newIcon = new Color[64,64];
@@ -226,6 +227,10 @@ namespace iconeditor
             {
                 history.Add(_icon);
                 historyPosition++;
+                if (historyPosition > maxHistoryPosition)
+                {
+                    maxHistoryPosition = historyPosition;
+                }
             }
 
             ToggleUndoRedoButtons();
@@ -400,6 +405,10 @@ namespace iconeditor
             if(historyPosition < history.Count)
             {
                 historyPosition++;
+                if (historyPosition > maxHistoryPosition)
+                {
+                    maxHistoryPosition = historyPosition;
+                }
                 icon = history[historyPosition];
                 canvas.Invalidate();
                 redrawPixels();
