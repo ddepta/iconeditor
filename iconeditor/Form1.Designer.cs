@@ -38,8 +38,6 @@
             this.toolStripTextBox2 = new System.Windows.Forms.ToolStripTextBox();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnRed = new System.Windows.Forms.Button();
-            this.btnUndo = new System.Windows.Forms.Button();
-            this.btnRedo = new System.Windows.Forms.Button();
             this.lbX = new System.Windows.Forms.Label();
             this.tbX = new System.Windows.Forms.TextBox();
             this.lbPixel1 = new System.Windows.Forms.Label();
@@ -140,28 +138,6 @@
             this.btnRed.UseVisualStyleBackColor = false;
             this.btnRed.Click += new System.EventHandler(this.BtnRed_Click);
             // 
-            // btnUndo
-            // 
-            this.btnUndo.Enabled = false;
-            this.btnUndo.Location = new System.Drawing.Point(595, 27);
-            this.btnUndo.Name = "btnUndo";
-            this.btnUndo.Size = new System.Drawing.Size(41, 23);
-            this.btnUndo.TabIndex = 7;
-            this.btnUndo.Text = "undo";
-            this.btnUndo.UseVisualStyleBackColor = true;
-            this.btnUndo.Click += new System.EventHandler(this.BtnUndo_Click);
-            // 
-            // btnRedo
-            // 
-            this.btnRedo.Enabled = false;
-            this.btnRedo.Location = new System.Drawing.Point(642, 27);
-            this.btnRedo.Name = "btnRedo";
-            this.btnRedo.Size = new System.Drawing.Size(48, 23);
-            this.btnRedo.TabIndex = 8;
-            this.btnRedo.Text = "redo";
-            this.btnRedo.UseVisualStyleBackColor = true;
-            this.btnRedo.Click += new System.EventHandler(this.BtnRedo_Click);
-            // 
             // lbX
             // 
             this.lbX.AutoSize = true;
@@ -245,8 +221,6 @@
             this.Controls.Add(this.lbPixel1);
             this.Controls.Add(this.tbX);
             this.Controls.Add(this.lbX);
-            this.Controls.Add(this.btnRedo);
-            this.Controls.Add(this.btnUndo);
             this.Controls.Add(this.btnRed);
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.black);
@@ -274,8 +248,6 @@
         private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem1;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnRed;
-        private System.Windows.Forms.Button btnUndo;
-        private System.Windows.Forms.Button btnRedo;
         private System.Windows.Forms.ToolStripMenuItem bildToolStripMenuItem;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox1;
         private System.Windows.Forms.ToolStripTextBox toolStripTextBox2;

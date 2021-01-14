@@ -34,13 +34,6 @@ namespace iconeditor
 
         Color[,] icon = new Color[64, 64];
         Color[,] redoState = new Color[64, 64];
-        string[,] fuckoff = new string[64, 64];
-
-        List<Color[,]> history = new List<Color[,]>();
-        int historyPosition = 0;
-        int maxHistoryPosition = 0;
-
-        List<string[,]> fuckoff_history = new List<string[,]>();
 
         public IconEditor()
         {
@@ -56,8 +49,6 @@ namespace iconeditor
             bmp = new Bitmap(canvas.ClientSize.Width, canvas.ClientSize.Height);
 
             ClearCanvas();
-            Color[,] _icon = (Color[,])icon.Clone();
-            history.Add(_icon);
             CalculatePixels();
             drawGrid();
         }
@@ -196,44 +187,6 @@ namespace iconeditor
                     _icon[y, x] = ColorTranslator.FromHtml(redHex);
                 }
             }
-
-
-            var tmphistory = history;
-
-            if (historyPosition < maxHistoryPosition)
-            {
-                history.RemoveRange(historyPosition, history.Count - (historyPosition));
-                Color[,] newIcon = new Color[64,64];
-                for(int y = 0; y < max_y_size; y++)
-                {
-                    for (int x = 0; x < max_x_size; x++)
-                    {
-                        if(icon[y, x] == redoState[y, x])
-                        {
-                            newIcon[y, x] = history[historyPosition - 1][y, x];
-                        }
-                        else
-                        {
-                            newIcon[y, x] = icon[y, x];
-                        }
-                    }
-                }
-                history.Add(newIcon);
-                history.Add(icon);
-                historyPosition =history.Count() - 1;
-
-            }
-            else
-            {
-                history.Add(_icon);
-                historyPosition++;
-                if (historyPosition > maxHistoryPosition)
-                {
-                    maxHistoryPosition = historyPosition;
-                }
-            }
-
-            ToggleUndoRedoButtons();
         }
 
         private void TrackBar1_Scroll(object sender, EventArgs e)
@@ -316,20 +269,10 @@ namespace iconeditor
 
         private void BtnRefreshSize_Click(object sender, EventArgs e)
         {
-            string message = "You'll lose the undo-history, do you want to continue?";
-            string caption = "Resize canvas";
-            MessageBoxButtons buttons = MessageBoxButtons.YesNo;
-            MessageBoxIcon messageBoxIcon = MessageBoxIcon.Exclamation;
-            DialogResult result;
-
-            result = MessageBox.Show(message, caption, buttons, messageBoxIcon);
-            if (result == System.Windows.Forms.DialogResult.Yes)
-            {
-                x_size = Convert.ToByte(tbX.Text);
-                y_size = Convert.ToByte(tbY.Text);
-                CalculatePixels();
-                canvas.Invalidate();
-            }
+            x_size = Convert.ToByte(tbX.Text);
+            y_size = Convert.ToByte(tbY.Text);
+            CalculatePixels();
+            canvas.Invalidate();
         }
 
         private void IconEditor_ResizeEnd(object sender, EventArgs e)
@@ -364,12 +307,6 @@ namespace iconeditor
 
         }
 
-        private void ToggleUndoRedoButtons()
-        {
-            btnUndo.Enabled = historyPosition != 0;
-            btnRedo.Enabled = historyPosition + 1 < history.Count;
-        }
-
         private void BtnClear_Click(object sender, EventArgs e)
         {
             string message = "Do you want to clear the canvas?";
@@ -384,37 +321,6 @@ namespace iconeditor
                 ClearCanvas();
                 canvas.Invalidate();
             }
-        }
-
-        private void BtnUndo_Click(object sender, EventArgs e)
-        {
-            if(historyPosition > 0)
-            {
-                historyPosition--;
-                icon = history[historyPosition];
-                canvas.Invalidate();
-                redrawPixels();
-            }
-
-            bool activateRedoButton = true;
-            ToggleUndoRedoButtons();
-        }
-
-        private void BtnRedo_Click(object sender, EventArgs e)
-        {
-            if(historyPosition < history.Count)
-            {
-                historyPosition++;
-                if (historyPosition > maxHistoryPosition)
-                {
-                    maxHistoryPosition = historyPosition;
-                }
-                icon = history[historyPosition];
-                canvas.Invalidate();
-                redrawPixels();
-            }
-            ToggleUndoRedoButtons();
-
         }
     }
 }
