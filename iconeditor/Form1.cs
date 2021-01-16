@@ -68,6 +68,7 @@ namespace iconeditor
 
         private void CalculatePixels()
         {
+            int tmp = canvas_pixelsize;
             canvas_width = Size.Width - 40;
             canvas_height = Size.Height - 107;
             int canvas_pixelsize_width = (canvas_width / x_size) - 1;
@@ -277,16 +278,7 @@ namespace iconeditor
 
         private void IconEditor_ResizeEnd(object sender, EventArgs e)
         {
-            /*
-            int tmp_width = canvas_width;
-            int tmp_height = canvas_height;
-            CalculatePixels();
 
-            if(tmp_width != canvas_width || tmp_height != canvas_height)
-            {
-                canvas.Invalidate();
-            }
-            */
         }
 
         private void IconEditor_ResizeBegin(object sender, EventArgs e)
