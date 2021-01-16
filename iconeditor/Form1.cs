@@ -252,12 +252,6 @@ namespace iconeditor
             }
         }
 
-        private void BtnRed_Click(object sender, EventArgs e)
-        {
-            brush = (Brush)Brushes.Red;
-
-        }
-
         private void BildToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
