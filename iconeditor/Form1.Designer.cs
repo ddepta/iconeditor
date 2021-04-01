@@ -162,6 +162,7 @@
             this.tbX.Name = "tbX";
             this.tbX.Size = new System.Drawing.Size(20, 20);
             this.tbX.TabIndex = 10;
+            this.tbX.Validating += new System.ComponentModel.CancelEventHandler(this.tbX_Validating);
             // 
             // lbPixel1
             // 

@@ -190,26 +190,6 @@ namespace iconeditor
             }
         }
 
-        private void TrackBar1_Scroll(object sender, EventArgs e)
-        {
-            //zoom = trackBar1.Value / 100f;
-            canvas.Invalidate();
-            Console.WriteLine(zoom.ToString());
-        }
-        private void BtnMinus_Click(object sender, EventArgs e)
-        {
-            zoom = zoom - 10;
-            canvas.Invalidate();
-        }
-
-        private void BtnPlus_Click(object sender, EventArgs e)
-        {
-            zoom = zoom + 10;
-            canvas.Invalidate();
-            brush = (Brush)Brushes.Beige;
-
-        }
-
         private void Eraser_Click(object sender, EventArgs e)
         {
             brush = (Brush)Brushes.White;
@@ -306,6 +286,20 @@ namespace iconeditor
             {
                 ClearCanvas();
                 canvas.Invalidate();
+            }
+        }
+
+        private void tbX_Validating(object sender, CancelEventArgs e)
+        {
+            int input = 0;
+
+            if(int.TryParse(tbX.Text, out input))
+            {
+                if(input > max_x_size)
+                {
+                    e.Cancel = true;
+                    btnRefreshSize.Enabled = false;
+                }
             }
         }
     }
