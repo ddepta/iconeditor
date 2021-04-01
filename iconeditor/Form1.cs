@@ -28,12 +28,9 @@ namespace iconeditor
         bool moving = false;
         Pen pen;
         Brush brush = (Brush)Brushes.Black;
-        int zoom = 1;
-        bool initialized = false;
         Bitmap bmp;
 
         Color[,] icon = new Color[64, 64];
-        Color[,] redoState = new Color[64, 64];
 
         public IconEditor()
         {
@@ -60,15 +57,12 @@ namespace iconeditor
                 for (int k = 0; k < max_y_size; k++)
                 {
                     icon[i, k] = Color.White;
-                    redoState[i, k] = Color.White;
-                    //icon[i, k] = Color.White.R
                 }
             }
         }
 
         private void CalculatePixels()
         {
-            int tmp = canvas_pixelsize;
             canvas_width = Size.Width - 40;
             canvas_height = Size.Height - 107;
             int canvas_pixelsize_width = (canvas_width / x_size) - 1;
@@ -92,7 +86,6 @@ namespace iconeditor
         {
             drawGrid();
             redrawPixels();
-            //e.Graphics.DrawImage(bmp, Point.Empty);
         }
 
         private void drawGrid()
@@ -135,8 +128,6 @@ namespace iconeditor
             Color c = new Pen(brush).Color;
 
             icon[selector_Y, selector_X] = c;
-            Array.Clear(redoState, 0, redoState.Length);
-            redoState[selector_Y, selector_X] = c;
             
             graphics.FillRectangle(brush, rectangle_X, rectangle_Y, canvas_pixelsize, canvas_pixelsize);
         }
@@ -145,8 +136,7 @@ namespace iconeditor
         {
             Brush redrawBrush;
             Color[,] tmpIcon;
-
-                tmpIcon = icon;
+            tmpIcon = icon;
 
             for (int y = 0; y < y_size; y++)
             {
@@ -178,8 +168,9 @@ namespace iconeditor
             moving = false;
             x = -1;
             y = -1;
-            //drawGrid();
+
             Color[,] _icon = new Color[64,64];
+
             for(int y = 0; y < max_y_size; y++)
             {
                 for (int x = 0; x < max_x_size; x++)
