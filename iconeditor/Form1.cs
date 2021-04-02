@@ -78,6 +78,7 @@ namespace iconeditor
              * Pixel width = (canvas width / amount of x-pixels) - size of grid lines
              * the size of the grid lines is substracted, to keep a space between the pixels for the grid
              */
+
             canvas_width = Size.Width - 40;
             canvas_height = Size.Height - 107;
             int canvas_pixelsize_width = (canvas_width / x_size) - 1;
@@ -91,11 +92,6 @@ namespace iconeditor
 
             Size panelSize = new Size(canvas_width, canvas_height);
             canvas.Size = panelSize;
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
         }
 
         private void Panel1_Paint(object sender, PaintEventArgs e)
@@ -206,11 +202,6 @@ namespace iconeditor
 
         }
 
-        private void DateiToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void BtnSave_Click(object sender, EventArgs e)
         {
             /*
@@ -246,32 +237,12 @@ namespace iconeditor
             }
         }
 
-        private void BildToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void CanvasSizeToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void BtnRefreshSize_Click(object sender, EventArgs e)
         {
             x_size = Convert.ToByte(tbX.Text);
             y_size = Convert.ToByte(tbY.Text);
             CalculatePixels();
             canvas.Invalidate();
-        }
-
-        private void IconEditor_ResizeEnd(object sender, EventArgs e)
-        {
-
-        }
-
-        private void IconEditor_ResizeBegin(object sender, EventArgs e)
-        {
-
         }
 
         private void IconEditor_Resize(object sender, EventArgs e)

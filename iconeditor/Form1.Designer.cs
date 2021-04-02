@@ -117,7 +117,6 @@
             this.bildToolStripMenuItem.Name = "bildToolStripMenuItem";
             this.bildToolStripMenuItem.Size = new System.Drawing.Size(75, 20);
             this.bildToolStripMenuItem.Text = "Image Size";
-            this.bildToolStripMenuItem.Click += new System.EventHandler(this.BildToolStripMenuItem_Click);
             // 
             // toolStripTextBox1
             // 
@@ -245,8 +244,6 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "IconEditor";
             this.Text = "Icon Editor";
-            this.Load += new System.EventHandler(this.Form1_Load);
-            this.ResizeEnd += new System.EventHandler(this.IconEditor_ResizeEnd);
             this.Resize += new System.EventHandler(this.IconEditor_Resize);
             this.menuStrip2.ResumeLayout(false);
             this.menuStrip2.PerformLayout();
