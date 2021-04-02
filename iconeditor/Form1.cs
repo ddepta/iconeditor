@@ -132,22 +132,24 @@ namespace iconeditor
              * draws a rectangle with the calculated pixel size on the canvas
              * additionally, the drawn pixel gets stored in an array to make saving/exporting and redrawing the canvas (after resizing) easier
              */
+
             x = e.X;
             y = e.Y;
-            //TODO: negative selectoren abfangen
-            //also zu kleine und zu große (über 800px)
 
-            int selector_X = e.X / (canvas_pixelsize + 1);
-            int rectangle_X = selector_X * (canvas_pixelsize + 1);
+            if(x >= 0 && y >= 0 && x <= canvas_width && y <= canvas_height)
+            {
+                int selector_X = e.X / (canvas_pixelsize + 1);
+                int rectangle_X = selector_X * (canvas_pixelsize + 1);
 
-            int selector_Y = e.Y / (canvas_pixelsize + 1);
-            int rectangle_Y = selector_Y * (canvas_pixelsize + 1);
+                int selector_Y = e.Y / (canvas_pixelsize + 1);
+                int rectangle_Y = selector_Y * (canvas_pixelsize + 1);
 
-            Color c = new Pen(brush).Color;
+                Color c = new Pen(brush).Color;
 
-            icon[selector_Y, selector_X] = c;
-            
-            graphics.FillRectangle(brush, rectangle_X, rectangle_Y, canvas_pixelsize, canvas_pixelsize);
+                icon[selector_Y, selector_X] = c;
+
+                graphics.FillRectangle(brush, rectangle_X, rectangle_Y, canvas_pixelsize, canvas_pixelsize);
+            }
         }
 
         private void redrawPixels(Color[,] previousIcon = null)
@@ -191,17 +193,6 @@ namespace iconeditor
             moving = false;
             x = -1;
             y = -1;
-
-            Color[,] _icon = new Color[64,64];
-
-            for(int y = 0; y < max_y_size; y++)
-            {
-                for (int x = 0; x < max_x_size; x++)
-                {
-                    string redHex = ColorTranslator.ToHtml(icon[y, x]);
-                    _icon[y, x] = ColorTranslator.FromHtml(redHex);
-                }
-            }
         }
 
         private void Eraser_Click(object sender, EventArgs e)
@@ -226,13 +217,14 @@ namespace iconeditor
              * Converts the current drawing from the drawing-array into a bitmap
              * The bitmap then gets saved as a PNG-image
              */
-            Bitmap bm = new Bitmap(10, 10);
+
+            Bitmap bm = new Bitmap(x_size, y_size);
             using (Graphics gr = Graphics.FromImage(bm))
             {
                 Color c;
-                for(int y = 0; y < 10; y++)
+                for(int y = 0; y < y_size; y++)
                 {
-                    for(int x = 0; x < 10; x++)
+                    for(int x = 0; x < x_size; x++)
                     {
                         c = icon[y, x];
                         using (Pen p = new Pen(c, 1))
@@ -243,6 +235,10 @@ namespace iconeditor
                 }
 
                 SaveFileDialog dialog = new SaveFileDialog();
+                dialog.FileName = "icon";
+                dialog.DefaultExt = ".png";
+                dialog.Filter = "Image Files|*.png";
+
                 if (dialog.ShowDialog() == DialogResult.OK)
                 {
                     bm.Save(dialog.FileName, ImageFormat.Png);
