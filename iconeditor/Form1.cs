@@ -26,9 +26,12 @@ namespace iconeditor
         int canvas_pixelsize;
 
         bool moving = false;
+
         Pen pen;
         Brush brush = (Brush)Brushes.Black;
         Bitmap bmp;
+
+        Pen dashedPen = new Pen(Color.Silver, 1);
 
         Color[,] icon = new Color[64, 64];
 
@@ -40,10 +43,17 @@ namespace iconeditor
             tbY.Text = y_size.ToString();
 
             graphics = canvas.CreateGraphics();
+
+            // Pen to draw pixels onto the canvas
             pen = new Pen(Color.Black, 1);
             pen.StartCap = System.Drawing.Drawing2D.LineCap.Square;
             pen.EndCap = System.Drawing.Drawing2D.LineCap.Square;
             bmp = new Bitmap(canvas.ClientSize.Width, canvas.ClientSize.Height);
+
+            // Pen to draw the dashed grid lines onto the canvas
+            dashedPen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
+            dashedPen.DashOffset = 50;
+            dashedPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
 
             ClearCanvas();
             CalculatePixels();
@@ -63,11 +73,17 @@ namespace iconeditor
 
         private void CalculatePixels()
         {
+            /* 
+             * Get the canvas dimensions and calculate the size for the pixels, so every pixel is square
+             * Pixel width = (canvas width / amount of x-pixels) - size of grid lines
+             * the size of the grid lines is substracted, to keep a space between the pixels for the grid
+             */
             canvas_width = Size.Width - 40;
             canvas_height = Size.Height - 107;
             int canvas_pixelsize_width = (canvas_width / x_size) - 1;
             int canvas_pixelsize_height = (canvas_height / y_size) - 1;
             
+            // take the smaller pixel size, so that the pixels are not too big
             canvas_pixelsize = canvas_pixelsize_width.CompareTo(canvas_pixelsize_height) == 1 ? canvas_pixelsize_height : canvas_pixelsize_width;
 
             canvas_width = (canvas_pixelsize * x_size) + (x_size - 1);
@@ -90,16 +106,13 @@ namespace iconeditor
 
         private void drawGrid()
         {
-            Pen dashedPen = new Pen(Color.Pink, 1);
-            dashedPen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
-            dashedPen.DashOffset = 50;
-            dashedPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Dash;
-
+            // draw the vertical grid lines
             for (int i = 1; i < x_size; i++)
             {
                 graphics.DrawLine(dashedPen, canvas_pixelsize * i + i - 1, 1, canvas_pixelsize * i + i - 1, canvas_height);
             }
 
+            // draw the horizontal grid lines
             for (int i = 1; i < y_size; i++)
             {
                 graphics.DrawLine(dashedPen, 1, canvas_pixelsize * i + i - 1, canvas_width, canvas_pixelsize * i + i - 1);
@@ -114,6 +127,11 @@ namespace iconeditor
 
         private void DrawPixel(MouseEventArgs e)
         {
+            /*
+             * fills the pixel at the position of the mouse cursor
+             * draws a rectangle with the calculated pixel size on the canvas
+             * additionally, the drawn pixel gets stored in an array to make saving/exporting and redrawing the canvas (after resizing) easier
+             */
             x = e.X;
             y = e.Y;
             //TODO: negative selectoren abfangen
@@ -134,6 +152,11 @@ namespace iconeditor
 
         private void redrawPixels(Color[,] previousIcon = null)
         {
+            /*
+             * redraws all drawn pixels when the program is resized
+             * when the program size changes, the pixel size changes too. So the pixels (displayed by rectangles) have to be drawn again
+             */
+
             Brush redrawBrush;
             Color[,] tmpIcon;
             tmpIcon = icon;
@@ -199,6 +222,10 @@ namespace iconeditor
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
+            /*
+             * Converts the current drawing from the drawing-array into a bitmap
+             * The bitmap then gets saved as a PNG-image
+             */
             Bitmap bm = new Bitmap(10, 10);
             using (Graphics gr = Graphics.FromImage(bm))
             {
@@ -253,6 +280,11 @@ namespace iconeditor
 
         private void IconEditor_Resize(object sender, EventArgs e)
         {
+            /*
+             * Recalculates the pixel size when the program gets resized
+             * Then the canvas gets invalidated (cleared), so the pixels can be redrawn
+             */
+
             int tmp_width = canvas_width;
             int tmp_height = canvas_height;
             CalculatePixels();
