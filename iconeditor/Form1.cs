@@ -80,7 +80,7 @@ namespace iconeditor
              */
 
             canvas_width = Size.Width - 40;
-            canvas_height = Size.Height - 107;
+            canvas_height = Size.Height - 85;
             int canvas_pixelsize_width = (canvas_width / x_size) - 1;
             int canvas_pixelsize_height = (canvas_height / y_size) - 1;
             
@@ -291,6 +291,17 @@ namespace iconeditor
                     btnRefreshSize.Enabled = false;
                 }
             }
+        }
+
+        private void btnHelp_Click(object sender, EventArgs e)
+        {
+            string caption = "Icon Editor v0.2";
+            string message = "The Icon Editor was developed by Daniel Depta for Fachhochschule Erfurt\n\nhttps://github.com/ddepta/iconeditor";
+            MessageBoxButtons buttons = MessageBoxButtons.OK;
+            MessageBoxIcon messageBoxIcon = MessageBoxIcon.Information;
+            DialogResult result;
+
+            result = MessageBox.Show(message, caption, buttons, messageBoxIcon);
         }
     }
 }
