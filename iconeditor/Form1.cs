@@ -60,15 +60,24 @@ namespace iconeditor
             drawGrid();
         }
 
-        private void ClearCanvas()
+        private Color[,] ClearCanvas(Color[,] drawing = null)
         {
             for (int i = 0; i < max_x_size; i++)
             {
                 for (int k = 0; k < max_y_size; k++)
                 {
-                    icon[i, k] = Color.White;
+                    if(drawing != null)
+                    {
+                        drawing[i, k] = Color.White;
+                    }
+                    else
+                    {
+                        icon[i, k] = Color.White;
+                    }
                 }
             }
+
+            return drawing;
         }
 
         private void CalculatePixels()
@@ -157,7 +166,10 @@ namespace iconeditor
 
             Brush redrawBrush;
             Color[,] tmpIcon;
+            Color[,] newIcon = new Color[64, 64];
             tmpIcon = icon;
+
+            newIcon = ClearCanvas(newIcon);
 
             for (int y = 0; y < y_size; y++)
             {
@@ -166,6 +178,7 @@ namespace iconeditor
                     Color c = tmpIcon[y, x];
                     if(c != Color.White)
                     {
+                        newIcon[y, x] = c;
                         redrawBrush = new SolidBrush(c);
                         int rectangle_X = x * (canvas_pixelsize + 1);
                         int rectangle_Y = y * (canvas_pixelsize + 1);
@@ -174,6 +187,8 @@ namespace iconeditor
                     }
                 }
             }
+
+            icon = newIcon;
         }
 
         private void Canvas_MouseMove(object sender, MouseEventArgs e)
