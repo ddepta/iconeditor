@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="black.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnPen.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         wwAADsMBx2+oZAAAAGxJREFUOE/tjMENwCAMAzNSZ2C4rNtPxJdiFEpaqWD+PclCwjkLi5kdOeezpsR4
@@ -126,7 +126,7 @@
         5AL7eIpUZx7XuwAAAABJRU5ErkJggg==
 </value>
   </data>
-  <data name="eraser.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="btnEraser.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         xAAADsQBlSsOGwAAATxJREFUOE+Vkk9qg1AQxu2q2x4gq5BtLyEinqFB0JXewGzcCLrQjeBNvEgJCaRQ
@@ -155,11 +155,10 @@
   </data>
   <data name="btnHelp.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAACRSURBVDhPzZGxCcAgEEUdISMFe2fLAvaWKRwgtdNYqaXx
-        h4uIXIiBFD74cPjvvnKK+fDeLzHGrcgXZRLqDR61PRNCOKy1WSmVpZSXUOMMHrXx0O11sBc8auVJKa1t
-        gHMuG2O+B/QaDmgpzbvWug5/CuB2gbDXJd70u0CN4aFvBNwuyBqDewFZY/wW0Iqs6RDiBEMl9XB1Lt2Y
-        AAAAAElFTkSuQmCC
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        wwAADsMBx2+oZAAAAJFJREFUOE/NkbEJwCAQRR0hIwV7Z8sC9pYpHCC101ippfGHi4hciIEUPvhw+O++
+        cor58N4vMcatyBdlEuoNHrU9E0I4rLVZKZWllJdQ4wwetfHQ7XWwFzxq5UkprW2Acy4bY74H9BoOaCnN
+        u9a6Dn8K4HaBsNcl3vS7QI3hoW8E3C7IGoN7AVlj/BbQiqzpEOIEQyX1cHUu3ZgAAAAASUVORK5CYII=
 </value>
   </data>
   <metadata name="$this.TrayHeight" type="System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">

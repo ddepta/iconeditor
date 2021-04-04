@@ -26,6 +26,8 @@ namespace iconeditor
         int canvas_pixelsize;
 
         bool moving = false;
+        bool x_valid = true;
+        bool y_valid = true;
 
         Pen pen;
         Brush brush = (Brush)Brushes.Black;
@@ -50,6 +52,8 @@ namespace iconeditor
             pen.EndCap = System.Drawing.Drawing2D.LineCap.Square;
             bmp = new Bitmap(canvas.ClientSize.Width, canvas.ClientSize.Height);
 
+            btnPen.BackColor = ColorTranslator.FromHtml("#2D9EEF");
+
             // Pen to draw the dashed grid lines onto the canvas
             dashedPen.DashCap = System.Drawing.Drawing2D.DashCap.Flat;
             dashedPen.DashOffset = 50;
@@ -60,15 +64,15 @@ namespace iconeditor
             drawGrid();
         }
 
-        private Color[,] ClearCanvas(Color[,] drawing = null)
+        private Color[,] ClearCanvas(Color[,] canvas = null)
         {
             for (int i = 0; i < max_x_size; i++)
             {
                 for (int k = 0; k < max_y_size; k++)
                 {
-                    if(drawing != null)
+                    if(canvas != null)
                     {
-                        drawing[i, k] = Color.White;
+                        canvas[i, k] = Color.White;
                     }
                     else
                     {
@@ -77,7 +81,7 @@ namespace iconeditor
                 }
             }
 
-            return drawing;
+            return canvas;
         }
 
         private void CalculatePixels()
@@ -206,18 +210,22 @@ namespace iconeditor
             y = -1;
         }
 
-        private void Eraser_Click(object sender, EventArgs e)
+        private void btnEraser_click(object sender, EventArgs e)
         {
             brush = (Brush)Brushes.White;
+            btnEraser.BackColor = ColorTranslator.FromHtml("#2D9EEF");
+            btnPen.BackColor = Color.Transparent;
         }
 
-        private void Black_Click(object sender, EventArgs e)
+
+        private void btnPen_Click(object sender, EventArgs e)
         {
             brush = (Brush)Brushes.Black;
-
+            btnPen.BackColor = ColorTranslator.FromHtml("#2D9EEF");
+            btnEraser.BackColor = Color.Transparent;
         }
 
-        private void BtnSave_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
             /*
              * Converts the current drawing from the drawing-array into a bitmap
@@ -252,7 +260,7 @@ namespace iconeditor
             }
         }
 
-        private void BtnRefreshSize_Click(object sender, EventArgs e)
+        private void btnRefreshSize_Click(object sender, EventArgs e)
         {
             x_size = Convert.ToByte(tbX.Text);
             y_size = Convert.ToByte(tbY.Text);
@@ -278,7 +286,7 @@ namespace iconeditor
 
         }
 
-        private void BtnClear_Click(object sender, EventArgs e)
+        private void btnClear_Click(object sender, EventArgs e)
         {
             string message = "Do you want to clear the canvas?";
             string caption = "Clear canvas";
@@ -294,20 +302,6 @@ namespace iconeditor
             }
         }
 
-        private void tbX_Validating(object sender, CancelEventArgs e)
-        {
-            int input = 0;
-
-            if(int.TryParse(tbX.Text, out input))
-            {
-                if(input > max_x_size)
-                {
-                    e.Cancel = true;
-                    btnRefreshSize.Enabled = false;
-                }
-            }
-        }
-
         private void btnHelp_Click(object sender, EventArgs e)
         {
             string caption = "Icon Editor v0.2";
@@ -317,6 +311,66 @@ namespace iconeditor
             DialogResult result;
 
             result = MessageBox.Show(message, caption, buttons, messageBoxIcon);
+        }
+
+        private void tbX_TextChanged(object sender, EventArgs e)
+        {
+            int input = 0;
+
+            if (int.TryParse(tbX.Text, out input))
+            {
+                if (input > 0 && input <= max_x_size)
+                {
+                    if(y_valid)
+                    {
+                        btnRefreshSize.Enabled = true;
+                        lbValidation.Hide();
+                    }
+                    x_valid = true;
+                }
+                else
+                {
+                    btnRefreshSize.Enabled = false;
+                    lbValidation.Show();
+                    x_valid = false;
+                }
+            }
+            else
+            {
+                btnRefreshSize.Enabled = false;
+                lbValidation.Show();
+                x_valid = false;
+            }
+        }
+
+        private void tbY_TextChanged(object sender, EventArgs e)
+        {
+            int input = 0;
+
+            if (int.TryParse(tbY.Text, out input))
+            {
+                if (input > 0 && input <= max_x_size)
+                {
+                    if (x_valid)
+                    {
+                        btnRefreshSize.Enabled = true;
+                        lbValidation.Hide();
+                    }
+                    y_valid = true;
+                }
+                else
+                {
+                    btnRefreshSize.Enabled = false;
+                    lbValidation.Show();
+                    y_valid = false;
+                }
+            }
+            else
+            {
+                btnRefreshSize.Enabled = false;
+                lbValidation.Show();
+                y_valid = false;
+            }
         }
     }
 }

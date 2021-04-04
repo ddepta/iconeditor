@@ -30,8 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(IconEditor));
             this.canvas = new System.Windows.Forms.Panel();
-            this.black = new System.Windows.Forms.Button();
-            this.eraser = new System.Windows.Forms.Button();
+            this.btnPen = new System.Windows.Forms.Button();
+            this.btnEraser = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.lbX = new System.Windows.Forms.Label();
             this.tbX = new System.Windows.Forms.TextBox();
@@ -43,6 +43,7 @@
             this.btnClear = new System.Windows.Forms.Button();
             this.lbDivider = new System.Windows.Forms.Label();
             this.btnHelp = new System.Windows.Forms.Button();
+            this.lbValidation = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // canvas
@@ -58,37 +59,37 @@
             this.canvas.MouseMove += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseMove);
             this.canvas.MouseUp += new System.Windows.Forms.MouseEventHandler(this.Canvas_MouseUp);
             // 
-            // black
+            // btnPen
             // 
-            this.black.BackColor = System.Drawing.Color.Transparent;
-            this.black.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("black.BackgroundImage")));
-            this.black.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.black.FlatAppearance.BorderSize = 0;
-            this.black.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(195)))), ((int)(((byte)(242)))));
-            this.black.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(215)))), ((int)(((byte)(243)))));
-            this.black.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.black.Location = new System.Drawing.Point(90, 5);
-            this.black.Name = "black";
-            this.black.Size = new System.Drawing.Size(23, 23);
-            this.black.TabIndex = 4;
-            this.black.UseVisualStyleBackColor = false;
-            this.black.Click += new System.EventHandler(this.Black_Click);
+            this.btnPen.BackColor = System.Drawing.Color.Transparent;
+            this.btnPen.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnPen.BackgroundImage")));
+            this.btnPen.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnPen.FlatAppearance.BorderSize = 0;
+            this.btnPen.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(195)))), ((int)(((byte)(242)))));
+            this.btnPen.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(215)))), ((int)(((byte)(243)))));
+            this.btnPen.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnPen.Location = new System.Drawing.Point(64, 5);
+            this.btnPen.Name = "btnPen";
+            this.btnPen.Size = new System.Drawing.Size(23, 23);
+            this.btnPen.TabIndex = 4;
+            this.btnPen.UseVisualStyleBackColor = false;
+            this.btnPen.Click += new System.EventHandler(this.btnPen_Click);
             // 
-            // eraser
+            // btnEraser
             // 
-            this.eraser.BackColor = System.Drawing.Color.Transparent;
-            this.eraser.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("eraser.BackgroundImage")));
-            this.eraser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.eraser.FlatAppearance.BorderSize = 0;
-            this.eraser.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(195)))), ((int)(((byte)(242)))));
-            this.eraser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(215)))), ((int)(((byte)(243)))));
-            this.eraser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.eraser.Location = new System.Drawing.Point(64, 5);
-            this.eraser.Name = "eraser";
-            this.eraser.Size = new System.Drawing.Size(23, 23);
-            this.eraser.TabIndex = 3;
-            this.eraser.UseVisualStyleBackColor = false;
-            this.eraser.Click += new System.EventHandler(this.Eraser_Click);
+            this.btnEraser.BackColor = System.Drawing.Color.Transparent;
+            this.btnEraser.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("btnEraser.BackgroundImage")));
+            this.btnEraser.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.btnEraser.FlatAppearance.BorderSize = 0;
+            this.btnEraser.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(133)))), ((int)(((byte)(195)))), ((int)(((byte)(242)))));
+            this.btnEraser.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(179)))), ((int)(((byte)(215)))), ((int)(((byte)(243)))));
+            this.btnEraser.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnEraser.Location = new System.Drawing.Point(90, 5);
+            this.btnEraser.Name = "btnEraser";
+            this.btnEraser.Size = new System.Drawing.Size(23, 23);
+            this.btnEraser.TabIndex = 3;
+            this.btnEraser.UseVisualStyleBackColor = false;
+            this.btnEraser.Click += new System.EventHandler(this.btnEraser_click);
             // 
             // btnSave
             // 
@@ -104,7 +105,7 @@
             this.btnSave.Size = new System.Drawing.Size(23, 23);
             this.btnSave.TabIndex = 1;
             this.btnSave.UseVisualStyleBackColor = false;
-            this.btnSave.Click += new System.EventHandler(this.BtnSave_Click);
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // lbX
             // 
@@ -121,7 +122,7 @@
             this.tbX.Name = "tbX";
             this.tbX.Size = new System.Drawing.Size(20, 20);
             this.tbX.TabIndex = 5;
-            this.tbX.Validating += new System.ComponentModel.CancelEventHandler(this.tbX_Validating);
+            this.tbX.TextChanged += new System.EventHandler(this.tbX_TextChanged);
             // 
             // lbPixel1
             // 
@@ -147,6 +148,7 @@
             this.tbY.Name = "tbY";
             this.tbY.Size = new System.Drawing.Size(20, 20);
             this.tbY.TabIndex = 6;
+            this.tbY.TextChanged += new System.EventHandler(this.tbY_TextChanged);
             // 
             // lbY
             // 
@@ -165,7 +167,7 @@
             this.btnRefreshSize.TabIndex = 7;
             this.btnRefreshSize.Text = "Resize";
             this.btnRefreshSize.UseVisualStyleBackColor = true;
-            this.btnRefreshSize.Click += new System.EventHandler(this.BtnRefreshSize_Click);
+            this.btnRefreshSize.Click += new System.EventHandler(this.btnRefreshSize_Click);
             // 
             // btnClear
             // 
@@ -181,7 +183,7 @@
             this.btnClear.Size = new System.Drawing.Size(23, 23);
             this.btnClear.TabIndex = 2;
             this.btnClear.UseVisualStyleBackColor = false;
-            this.btnClear.Click += new System.EventHandler(this.BtnClear_Click);
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // lbDivider
             // 
@@ -210,11 +212,24 @@
             this.btnHelp.UseVisualStyleBackColor = false;
             this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
+            // lbValidation
+            // 
+            this.lbValidation.AutoSize = true;
+            this.lbValidation.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbValidation.ForeColor = System.Drawing.Color.Red;
+            this.lbValidation.Location = new System.Drawing.Point(337, 10);
+            this.lbValidation.Name = "lbValidation";
+            this.lbValidation.Size = new System.Drawing.Size(198, 13);
+            this.lbValidation.TabIndex = 18;
+            this.lbValidation.Text = "Please enter numbers between 1 and 64";
+            // 
             // IconEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(824, 868);
+            this.ClientSize = new System.Drawing.Size(824, 849);
+            this.Controls.Add(this.btnEraser);
+            this.Controls.Add(this.lbValidation);
             this.Controls.Add(this.lbDivider);
             this.Controls.Add(this.btnClear);
             this.Controls.Add(this.btnRefreshSize);
@@ -225,9 +240,8 @@
             this.Controls.Add(this.tbX);
             this.Controls.Add(this.lbX);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.black);
+            this.Controls.Add(this.btnPen);
             this.Controls.Add(this.canvas);
-            this.Controls.Add(this.eraser);
             this.Controls.Add(this.btnHelp);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(200, 200);
@@ -242,8 +256,8 @@
         #endregion
 
         private System.Windows.Forms.Panel canvas;
-        private System.Windows.Forms.Button eraser;
-        private System.Windows.Forms.Button black;
+        private System.Windows.Forms.Button btnEraser;
+        private System.Windows.Forms.Button btnPen;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Label lbX;
         private System.Windows.Forms.TextBox tbX;
@@ -255,6 +269,7 @@
         private System.Windows.Forms.Button btnClear;
         private System.Windows.Forms.Label lbDivider;
         private System.Windows.Forms.Button btnHelp;
+        private System.Windows.Forms.Label lbValidation;
     }
 }
 
